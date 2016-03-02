@@ -16,19 +16,18 @@ _HEADER = "#fields\tindicator\tindicator_type\tmeta.source\tmeta.url\tmeta.do_no
 
 # Mapping of OTXv2 Indicator types to Bro Intel types, additionally,
 # identifies unsupported intel types to prevent errors in Bro.
-_MAP = {"IPv4":"Intel::ADDR",
-           "IPv6":"Intel::ADDR",
-           "domain":"Intel::DOMAIN",
-           "hostname":"Intel::DOMAIN",
-           "email":"Intel::EMAIL",
-           "URL":"Intel::URL",
-           "URI":"Intel::URL",
-           "FileHash-MD5":"Intel::FILE_HASH",
-           "FileHash-SHA1":"Intel::FILE_HASH",
-           "FileHash-SHA256":"Intel::FILE_HASH",
-           "CVE":"Unsupported",
-           "Mutex":"Unsupported",
-           "CIDR":"Unsupported"}
+_MAP = {
+    "IPv4": "Intel::ADDR",
+    "IPv6": "Intel::ADDR",
+    "domain": "Intel::DOMAIN",
+    "hostname": "Intel::DOMAIN",
+    "email": "Intel::EMAIL",
+    "URL": "Intel::URL",
+    "URI": "Intel::URL",
+    "FileHash-MD5": "Intel::FILE_HASH",
+    "FileHash-SHA1": "Intel::FILE_HASH",
+    "FileHash-SHA256": "Intel::FILE_HASH",
+}
 
 def _get(key, mtime, limit=20, next_request=''):
     '''
@@ -76,7 +75,7 @@ def map_indicator_type(indicator_type):
     Maps an OTXv2 indicator type to a Bro Intel Framework type.
     '''
 
-    return _MAP[indicator_type]
+    return _MAP.get(indicator_type)
 
 def main():
     '''Retrieve intel from OTXv2 API.'''
@@ -95,7 +94,7 @@ def main():
         for pulse in iter_pulses(key, mtime):
             for indicator in pulse[u'indicators']:
                 bro_type = map_indicator_type(indicator[u'type'])
-                if bro_type == 'Unsupported':
+                if bro_type is None:
                     continue
                 try:
                     url = pulse[u'references'][0]
