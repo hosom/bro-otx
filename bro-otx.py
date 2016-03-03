@@ -3,6 +3,7 @@
 import requests
 import sys
 
+from argparse import ArgumentParser
 from ConfigParser import ConfigParser
 from datetime import datetime, timedelta
 
@@ -80,8 +81,14 @@ def map_indicator_type(indicator_type):
 def main():
     '''Retrieve intel from OTXv2 API.'''
 
+    parser = ArgumentParser(description='AlienVault OTXv2 Bro Client')
+    parser.add_argument('-c', '--config', 
+                        help='configuration file path',
+                        default='bro-otx.conf')
+    args = parser.parse_args()
+
     config = ConfigParser()
-    config.read('bro-otx.conf')
+    config.read(args.config)
     key = config.get('otx', 'api_key')
     days = int(config.get('otx', 'days_of_history'))
     outfile = config.get('otx', 'outfile')
