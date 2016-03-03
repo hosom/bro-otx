@@ -92,6 +92,16 @@ def main():
     with open(outfile, 'wb') as f:
         f.write(_HEADER)
         for pulse in iter_pulses(key, mtime):
+            # Intel description for notices
+            description = 'AlienVault OTXv2 - %s ID: %s Author: %s' % (
+                                pulse[u'name'], 
+                                pulse[u'id'], 
+                                pulse[u'author_name'])
+            # A lot of care has to go into creating this description.
+            # Tabs are removed to prevent Bro from throwing errors.
+            # Unicode is also dropped to prevent errors.
+            description = description.replace('\t', ' ')
+            description = description.encode('ascii', 'replace')
             for indicator in pulse[u'indicators']:
                 bro_type = map_indicator_type(indicator[u'type'])
                 if bro_type is None:
@@ -102,7 +112,7 @@ def main():
                     url = 'https://otx.alienvault.com'
                 fields = [indicator[u'indicator'],
                     bro_type,
-                    pulse[u'author_name'],
+                    description,
                     url,
                     do_notice + '\n']
                 f.write('\t'.join(fields))
