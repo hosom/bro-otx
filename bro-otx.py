@@ -2,6 +2,7 @@
 
 import requests
 import sys
+import os
 
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
@@ -96,7 +97,7 @@ def main():
 
     mtime = (datetime.now() - timedelta(days=days)).isoformat()
 
-    with open(outfile, 'wb') as f:
+    with open(outfile + '.tmp', 'wb') as f:
         f.write(_HEADER)
         for pulse in iter_pulses(key, mtime):
             # Intel description for notices
@@ -123,6 +124,8 @@ def main():
                     url,
                     do_notice + '\n']
                 f.write('\t'.join(fields))
+
+	os.rename(outfile + '.tmp', outfile)
 
 if __name__ == '__main__':
     main()
