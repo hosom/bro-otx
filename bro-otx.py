@@ -31,6 +31,13 @@ _MAP = {
     "FileHash-SHA256": "Intel::FILE_HASH",
 }
 
+def to_unicode(obj, encoding='utf-8'):
+    if isinstance(obj, basestring):
+        if not isinstance(obj, unicode):
+            obj = unicode(obj, encoding)
+    return obj
+
+
 def _get(key, mtime, limit=20, next_request=''):
     '''
     Retrieves a result set from the OTXv2 API using the restrictions of
@@ -107,9 +114,7 @@ def main():
                                 pulse[u'author_name'])
             # A lot of care has to go into creating this description.
             # Tabs are removed to prevent Bro from throwing errors.
-            # Unicode is also dropped to prevent errors.
             description = description.replace('\t', ' ')
-            description = description.encode('ascii', 'replace')
             for indicator in pulse[u'indicators']:
                 bro_type = map_indicator_type(indicator[u'type'])
                 if bro_type is None:
@@ -118,12 +123,12 @@ def main():
                     url = pulse[u'references'][0]
                 except IndexError:
                     url = 'https://otx.alienvault.com'
-                fields = [indicator[u'indicator'],
-                    bro_type,
-                    description,
-                    url,
-                    do_notice + '\n']
-                f.write('\t'.join(fields))
+                fields = [to_unicode(indicator[u'indicator']),
+                    to_unicode(bro_type),
+                    to_unicode(description),
+                    to_unicode(url),
+                    to_unicode(do_notice) + to_unicode('\n')]
+                f.write('\t'.join(fields).encode('utf-8'))
 
 	os.rename(outfile + '.tmp', outfile)
 
