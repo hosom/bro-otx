@@ -7,6 +7,7 @@ import os
 from argparse import ArgumentParser
 from ConfigParser import ConfigParser
 from datetime import datetime, timedelta
+from urlparse import urlparse
 
 # The URL is hard coded. I'm comfortable doing this since it's unlikely that
 # the URL will change without resulting in an API change that will require
@@ -128,6 +129,9 @@ def main():
                     to_unicode(description),
                     to_unicode(url),
                     to_unicode(do_notice) + to_unicode('\n')]
+                if fields[1] == "Intel::URL":
+                    url = urlparse(fields[0])
+                    fields[0] = url.geturl().replace('{0}://'.format(url.scheme), '')
                 f.write('\t'.join(fields).encode('utf-8'))
 
 	os.rename(outfile + '.tmp', outfile)
