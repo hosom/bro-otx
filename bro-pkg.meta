@@ -1,0 +1,8 @@
+[package]
+description = Subscribe to and load Alienvault OTX data into Bro
+tags = intel, otx, alienvault
+version = 1.0.0
+script_dir = scripts
+config_files = scripts/bro-otx.conf
+depends = 
+    bro >=2.5.0
