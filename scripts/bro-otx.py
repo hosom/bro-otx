@@ -134,7 +134,7 @@ def main():
                     fields[0] = url.geturl().replace('{0}://'.format(url.scheme), '')
                 f.write('\t'.join(fields).encode('utf-8'))
 
-	os.rename(outfile + '.tmp', outfile)
+    os.rename(outfile + '.tmp', outfile)
 
 if __name__ == '__main__':
     main()
