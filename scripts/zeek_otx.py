@@ -108,7 +108,8 @@ def sync_otx_cache(api_key, days, otx_cache):
     max_age = datetime.timedelta(days=days)
 
     # sync otx
-    cache = OTXv2Cached(api_key, cache_dir=otx_cache, max_age=max_age)
+    cache = OTXv2Cached(api_key, cache_dir=otx_cache, 
+                        max_age=max_age, user_agent='ZeekOTX')
     try:
         cache.update()
     except Exception as error:
