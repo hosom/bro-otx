@@ -1,13 +1,16 @@
 # bro-otx
-Integrate Bro with Alienvault OTX
 
-Installation
-------------
+Integrate Zeek with AlienVault OTX. 
 
-Unzip the project into your equivalent to /opt/bro/share/bro/site/
+## Manual Installation
 
-Add the following to your local.bro: @load site/otx
-
-Add your api key to the bro-otx.conf configuration file. 
-
-Add the bro-otx.py script into the crontab of a user with the ability to write to your bro scripts directories.
+* Unzip the project.
+* Move the **scripts** directory to your Zeek **site** directory and rename it to **otx**.
+* Create a virtual environment for the **zeek_otx.py** script to run in.
+    * `virtualenv -p python3 .venv` inside of the **otx** directory.
+* Install dependencies `pip install -r requirements.txt`
+* Add your **api_key** to **zeek_otx.conf**.
+* Run **zeek_otx.py** for the first time.
+* Verify that **otx.dat** has been created.
+* Add `@load site/otx` to your **local.bro**
+* **Optional**: Add **zeek_otx.py** to your crontab for regular pulse sync.
