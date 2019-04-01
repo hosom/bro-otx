@@ -1,4 +1,4 @@
-# bro-otx
+# Zeek-OTX
 
 Integrate Zeek with AlienVault OTX. 
 
