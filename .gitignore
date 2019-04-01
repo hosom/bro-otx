@@ -121,3 +121,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ignore otx cache
+.otx
+
+# ignore settings.json for vscode
+.vscode
